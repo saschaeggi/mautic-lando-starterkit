@@ -3,6 +3,7 @@
 !.gitignore
 !.htaccess
 !.gitkeep
+!.lando.yml
 .php_cs.cache
 /.env
 /composer.phar
@@ -113,3 +114,6 @@
 !/themes/blank-big.png
 
 /translations
+
+!/.lando
+!/.lando/*

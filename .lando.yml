@@ -1,0 +1,39 @@
+name: mautic
+recipe: lamp
+config:
+  webroot: .
+  php: '7.3'
+  database: mysql:5.7
+
+tooling:
+  mt:
+    service: appserver
+    description: Run Mautic commands
+    cmd: bin/console
+
+proxy:
+  mailhog:
+    - mail.mautic.lndo.site
+
+services:
+  appserver:
+    type: php
+    build_as_root:
+      - docker-php-ext-install sockets
+    build:
+      - composer install
+    run:
+      - mysql -umautic -pmautic -hdatabase mautic < db_dump/init.sql
+    xdebug: true
+    config:
+      php: .lando/php/php.ini
+  database:
+    type: mysql:5.7
+    portforward: true
+    creds:
+      user: mautic
+      password: mautic
+      database: mautic
+  mailhog:
+    type: mailhog
+    portforward: true
